@@ -1,0 +1,49 @@
+DOCKER COMMANDS
+
+docker pull [IMAGE]   #To pull a image to our local repository
+
+docker run -d -p6000:6794        #With the -d detached mode.   With -p: -p[host port]:[container port]
+
+docker ps -a     #show containers and if they're runing
+
+docker images     #show docker images locally
+
+docker logs [container]  #show a container log
+
+docker run -d -p[host port]: [container port] --name [container name you want] [IMAGE]    # crea un nuevo container enlazado a un puerto con el nombre que uno le quiera poner
+
+docker excec -it [docker id or name] [ARG  (/bin/bash)]  #it gets the terminal over runing container. -it is interactive terminal. This command is to navigate inside the containter files
+exit #to exit the terminal
+
+
+NETWORKS IN DOKCER
+
+docker network ls #It shows the docker networks 
+
+docker network create [network name you want]    #It creates a new docker network 
+
+DOCKER COMPOSE
+
+version: '3'
+services:
+  containter_name:
+    image:
+    ports:
+     -example
+    environment:
+	-example
+	-example
+  container2_name:
+	......	
+
+docker-compose -f [docker-compose file name] up -d  #It runs the containers in the docker compose 
+
+
+
+
+
+
+
+
+
+

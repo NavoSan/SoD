@@ -1,0 +1,38 @@
+version: '3.4'
+
+networks:
+  school:
+    external: true
+
+services:
+  frontend:
+    image: registry.gitlab.com/navosan/schoolofdevopsdocker:frontend
+    deploy:
+      mode: global
+    ports:
+      - 8080:8080
+    environment:
+      PORT: 8080
+    networks:
+      - school
+  api:
+    image: registry.gitlab.com/navosan/schoolofdevopsdocker:backend
+    ports: 
+      - 8081:3333
+    environment:
+      DB_NAME: 'movies'
+    networks:
+      - school
+  db:
+    image: mysql:5-debian
+    ports:
+      - 8082:3030
+    environment:
+      MYSQL_ROOT_PASSWORD: school
+      MYSQL_PASSWORD: school
+      MYSQL_USER: school
+      MYSQL_DATABASE: movie_db
+    networks:
+      - school
+    
+

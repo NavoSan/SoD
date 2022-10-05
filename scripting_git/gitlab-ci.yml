@@ -1,0 +1,42 @@
+ stages:
+    - build
+    - test
+    - deploy
+
+variables:
+    BUILD_FILE: "endava-devops.txt"
+
+build a devops:
+    image: alpine 
+    stage: build
+    script: 
+        - echo "Building a DevOps"
+        - mkdir build
+        - echo "Cloud Skills" >> build/$BUILD_FILE
+        - echo "Container expertise" >> build/$BUILD_FILE
+        - echo "Git and CICD" >> build/$BUILD_FILE
+        - echo "Linux" >> build/$BUILD_FILE
+        - ls -R
+    artifacts:
+        paths:
+            - build
+
+test container:
+    image: alpine
+    stage: test
+    script: 
+        - test -f build/$BUILD_FILE
+        - grep "Container expertise" build/$BUILD_FILE
+
+test cloud:
+    image: alpine
+    stage: test
+    script: 
+        - test -f build/$BUILD_FILE
+        - grep "Cloud Skills" build/$BUILD_FILE
+
+upload to s3:
+    image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
+    stage: deploy
+    script:
+    -  aws s3 cp build/$BUILD_FILE s3://$AWS_S3_BUCKET
