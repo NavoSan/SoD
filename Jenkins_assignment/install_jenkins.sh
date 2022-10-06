@@ -23,24 +23,27 @@ if ! [ $? -eq 0 ]; then
     if [ $ans2 == 'y' ];then
         wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo apt-key add -
         sudo sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
+        sudo apt update
+        sudo apt-get install jenkins
     else
         echo -e "\n Jenkins cannot be installed without the dependencies"
     fi
 fi
 
 echo "Installing jenkins"
-sudo apt update
-sudo apt-get install jenkins
+
 
 #Install node and npm to be able to build the nodejs app
-node --version
 
-if ! [ $? -eq 0 ];then
+if ! [ $(which node 2>/dev/null) ]; then
+    echo -e "Node is not installed. Donwloading Node "
     sudo apt install node
+fi
 
-npm --version
-if ! [ $? -eq 0 ];then
+if ! [ $(which npm 2>/dev/null) ]; then
+    echo -e "Node is not installed. Donwloading Node "
     sudo apt install npm
+fi
 
 # Start Jenkins
 sudo service jenkins start
