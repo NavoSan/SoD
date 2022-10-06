@@ -1,5 +1,7 @@
 #! /bin/bash
 
+#Download Java if it's not in the service
+
 if [ $(which java 2>/dev/null) ]; then
     echo -e "Java is installed.\n"
 else
@@ -13,8 +15,7 @@ else
     fi
 fi
 
-#Download and Install Jenkins
-
+#Download and Install Jenkins, but first verify if packages are installed, if not, it install the dependencies
 sudo apt-get install jenkins
 
 if ! [ $? -eq 0 ]; then
@@ -26,13 +27,24 @@ if ! [ $? -eq 0 ]; then
         echo -e "\n Jenkins cannot be installed without the dependencies"
     fi
 fi
-            
+
 echo "Installing jenkins"
 sudo apt update
 sudo apt-get install jenkins
 
+#Install node and npm to be able to build the nodejs app
+node --version
+
+if ! [ $? -eq 0 ];then
+    sudo apt install node
+
+npm --version
+if ! [ $? -eq 0 ];then
+    sudo apt install npm
+
 # Start Jenkins
 sudo service jenkins start
 
+# Print the initial Jenkins password
 echo "The initial Jenkins password is: "
 sudo cat /var/lib/jenkins/secrets/initialAdminPassword
